@@ -1,4 +1,3 @@
-// Product Types
 export interface Product {
   id: string;
   name: string;
@@ -8,7 +7,6 @@ export interface Product {
   compareAtPrice?: number;
   images: string[];
   category: Category;
-  variants?: ProductVariant[];
   inventory: number;
   sku: string;
   isFeatured: boolean;
@@ -17,162 +15,152 @@ export interface Product {
   updatedAt: Date;
 }
 
-export interface ProductVariant {
-  id: string;
-  productId: string;
-  name: string;
-  sku: string;
-  price: number;
-  inventory: number;
-  options: {
-    name: string;
-    value: string;
-  }[];
-}
-
-// Category Types
 export interface Category {
   id: string;
   name: string;
   slug: string;
-  description?: string;
-  image?: string;
-  parentId?: string;
   isActive: boolean;
 }
 
-// Cart Types
 export interface CartItem {
+  id: string;
+  productId: string;
+  variantId?: string;
   product: Product;
-  variant?: ProductVariant;
   quantity: number;
+  price: number;
 }
 
-export interface Cart {
-  items: CartItem[];
-  subtotal: number;
-  tax: number;
-  shipping: number;
-  total: number;
-}
-
-// Order Types
 export interface Order {
   id: string;
   orderNumber: string;
   userId: string;
-  items: CartItem[];
+  email: string;
+  subtotal: number;
+  taxAmount: number;
+  shippingAmount: number;
+  discountAmount: number;
+  total: number;
+  currency: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  paymentMethod?: string;
   shippingAddress: Address;
   billingAddress: Address;
-  subtotal: number;
-  tax: number;
-  shipping: number;
-  total: number;
-  status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  paymentMethod: string;
+  customerNote?: string;
+  shippingMethod?: string;
+  trackingNumber?: string;
+  estimatedDelivery?: Date;
+  completedAt?: Date;
+  cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  orderItems: OrderItem[];
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
-
-// User Types
-export interface User {
+export interface OrderItem {
   id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone?: string;
-  addresses: Address[];
+  orderId: string;
+  productId: string;
+  variantId?: string;
+  productName: string;
+  variantName?: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
   createdAt: Date;
 }
 
 export interface Address {
   id: string;
+  userId: string;
   type: 'shipping' | 'billing';
   firstName: string;
   lastName: string;
   company?: string;
-  address1: string;
-  address2?: string;
+  addressLine1: string;
+  addressLine2?: string;
   city: string;
   state: string;
   postalCode: string;
   country: string;
   phone?: string;
   isDefault: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Blog Types
-export interface BlogPost {
+export interface Payment {
   id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  featuredImage?: string;
-  author: string;
-  category: string;
-  tags: string[];
-  publishedAt: Date;
-  isPublished: boolean;
+  orderId: string;
+  paymentIntentId?: string;
+  amount: number;
+  currency: string;
+  status: 'requires_payment_method' | 'requires_confirmation' | 'requires_action' | 'processing' | 'requires_capture' | 'canceled' | 'succeeded';
+  paymentMethodType?: string;
+  paymentMethodDetails?: any;
+  errorMessage?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Page Types
-export interface Page {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  isPublished: boolean;
-  order: number;
-}
-
-// Store Settings Types
 export interface StoreSettings {
+  id: string;
   storeName: string;
   storeEmail: string;
-  storePhone: string;
+  storePhone?: string;
   storeLogo?: string;
   storeFavicon?: string;
   currency: string;
   currencySymbol: string;
-  address: Address;
-  socialLinks: {
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-    youtube?: string;
+  taxRate: number;
+  shippingEnabled: boolean;
+  freeShippingThreshold: number;
+  defaultShippingCost: number;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
+  youtubeUrl?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  themeColors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    foreground: string;
+    muted: string;
+    border: string;
   };
-  seo: {
-    title: string;
-    description: string;
-    keywords: string;
-  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Theme Types
-export interface ThemeColors {
-  primary: string;
-  secondary: string;
-  accent: string;
-  background: string;
-  foreground: string;
-  muted: string;
-  border: string;
+export interface CreateOrderRequest {
+  cartItems: Array<{
+    productId: string;
+    variantId?: string;
+    quantity: number;
+  }>;
+  shippingAddress: Omit<Address, 'id' | 'userId' | 'isDefault' | 'createdAt' | 'updatedAt'>;
+  billingAddress?: Omit<Address, 'id' | 'userId' | 'isDefault' | 'createdAt' | 'updatedAt'>;
+  customerNote?: string;
+  shippingMethod?: string;
+  email: string;
 }
 
-export interface ThemeConfig {
-  colors: ThemeColors;
-  fonts: {
-    heading: string;
-    body: string;
-  };
-  borderRadius: string;
-  headerStyle: 'default' | 'minimal' | 'centered';
-  footerStyle: 'default' | 'minimal' | 'columns';
+export interface UpdateOrderRequest {
+  id?: string;
+  orderId?: string;
+  status?: Order['status'];
+  paymentStatus?: Order['paymentStatus'];
+  trackingNumber?: string;
+  estimatedDelivery?: Date;
 }
