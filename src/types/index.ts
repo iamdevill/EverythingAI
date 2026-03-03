@@ -22,10 +22,27 @@ export interface Category {
   isActive: boolean;
 }
 
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  sku: string;
+  inventory: number;
+  options: Array<{
+    name: string;
+    value: string;
+  }>;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface CartItem {
   id: string;
   productId: string;
   variantId?: string;
+  variant?: ProductVariant;
   product: Product;
   quantity: number;
   price: number;
@@ -104,6 +121,17 @@ export interface Payment {
   updatedAt: Date;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface StoreSettings {
   id: string;
   storeName: string;
@@ -117,12 +145,26 @@ export interface StoreSettings {
   shippingEnabled: boolean;
   freeShippingThreshold: number;
   defaultShippingCost: number;
+  address?: {
+    address1: string;
+    address2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
   addressLine1?: string;
   addressLine2?: string;
   city?: string;
   state?: string;
   postalCode?: string;
   country: string;
+  socialLinks?: {
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+    youtube?: string;
+  };
   facebookUrl?: string;
   instagramUrl?: string;
   twitterUrl?: string;

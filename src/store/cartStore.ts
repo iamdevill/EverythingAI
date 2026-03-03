@@ -31,8 +31,18 @@ export const useCartStore = create<CartState>()(
             return { items: newItems };
           }
 
+          const newCartItem: CartItem = {
+            id: `${product.id}-${variant?.id || 'base'}`,
+            productId: product.id,
+            variantId: variant?.id,
+            variant: variant,
+            product: product,
+            quantity: quantity,
+            price: variant?.price || product.price
+          };
+
           return {
-            items: [...state.items, { product, variant, quantity }],
+            items: [...state.items, newCartItem],
           };
         });
       },

@@ -39,11 +39,13 @@ export default function SignInPage() {
       if (data.user) {
         setUser({
           id: data.user.id,
-          email: data.user.email || formData.email,
+          email: data.user.email || '',
           firstName: data.user.user_metadata?.first_name || '',
           lastName: data.user.user_metadata?.last_name || '',
           addresses: [],
+          isActive: true,
           createdAt: new Date(),
+          updatedAt: new Date(),
         });
         router.push('/account');
       }

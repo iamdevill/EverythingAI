@@ -22,11 +22,13 @@ export default function AccountPage() {
         if (session?.user) {
           setUser({
             id: session.user.id,
-            email: session.user.email || '',
+            email: session.user.email || "",
             firstName: session.user.user_metadata?.first_name || '',
             lastName: session.user.user_metadata?.last_name || '',
             addresses: [],
+            isActive: true,
             createdAt: new Date(session.user.created_at),
+            updatedAt: new Date(),
           });
         } else if (!user) {
           router.push('/signin');

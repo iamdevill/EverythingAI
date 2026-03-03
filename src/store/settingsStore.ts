@@ -1,10 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { StoreSettings, ThemeConfig } from '@/types';
+import { StoreSettings } from '@/types';
 
 interface SettingsState {
   settings: StoreSettings;
-  theme: ThemeConfig;
+  theme: {
+    colors: StoreSettings['themeColors'];
+    borderRadius: string;
+    headerStyle: string;
+    footerStyle: string;
+  };
   announcement: {
     enabled: boolean;
     message: string;
@@ -17,43 +22,39 @@ interface SettingsState {
     hasConsented: boolean;
   };
   updateSettings: (settings: Partial<StoreSettings>) => void;
-  updateTheme: (theme: Partial<ThemeConfig>) => void;
+  updateTheme: (theme: Partial<SettingsState['theme']>) => void;
   setAnnouncement: (announcement: { enabled: boolean; message: string; link?: string }) => void;
   setCookieConsent: (consent: { analytics: boolean; marketing: boolean }) => void;
 }
 
 const defaultSettings: StoreSettings = {
+  id: '1',
   storeName: 'My Store',
   storeEmail: 'contact@mystore.com',
   storePhone: '+1 234 567 8900',
   currency: 'USD',
   currencySymbol: '$',
+  taxRate: 0.08,
+  shippingEnabled: true,
+  freeShippingThreshold: 50,
+  defaultShippingCost: 5,
+  country: 'US',
   address: {
-    id: '1',
-    type: 'shipping',
-    firstName: '',
-    lastName: '',
     address1: '123 Store Street',
     city: 'New York',
     state: 'NY',
     postalCode: '10001',
-    country: 'US',
-    isDefault: true,
+    country: 'US'
   },
   socialLinks: {
     facebook: 'https://facebook.com',
     instagram: 'https://instagram.com',
     twitter: 'https://twitter.com',
   },
-  seo: {
-    title: 'My Store - Best Products Online',
-    description: 'Welcome to My Store - Your one-stop shop for quality products',
-    keywords: 'ecommerce, online store, shopping',
-  },
-};
-
-const defaultTheme: ThemeConfig = {
-  colors: {
+  seoTitle: 'My Store - Best Products Online',
+  seoDescription: 'Welcome to My Store - Your one-stop shop for quality products',
+  seoKeywords: 'ecommerce, online store, shopping',
+  themeColors: {
     primary: '#2563eb',
     secondary: '#64748b',
     accent: '#f59e0b',
@@ -62,10 +63,12 @@ const defaultTheme: ThemeConfig = {
     muted: '#f1f5f9',
     border: '#e2e8f0',
   },
-  fonts: {
-    heading: 'Inter',
-    body: 'Inter',
-  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+const defaultTheme = {
+  colors: defaultSettings.themeColors,
   borderRadius: '0.5rem',
   headerStyle: 'default',
   footerStyle: 'default',

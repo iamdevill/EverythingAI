@@ -19,7 +19,7 @@ export default function Footer() {
               Your one-stop shop for quality products. We offer the best selection of items at competitive prices.
             </p>
             <div className="flex gap-4">
-              {settings.socialLinks.facebook && (
+              {settings.socialLinks?.facebook && (
                 <a
                   href={settings.socialLinks.facebook}
                   target="_blank"
@@ -29,7 +29,7 @@ export default function Footer() {
                   <Facebook className="h-5 w-5" />
                 </a>
               )}
-              {settings.socialLinks.instagram && (
+              {settings.socialLinks?.instagram && (
                 <a
                   href={settings.socialLinks.instagram}
                   target="_blank"
@@ -39,7 +39,7 @@ export default function Footer() {
                   <Instagram className="h-5 w-5" />
                 </a>
               )}
-              {settings.socialLinks.twitter && (
+              {settings.socialLinks?.twitter && (
                 <a
                   href={settings.socialLinks.twitter}
                   target="_blank"
@@ -123,7 +123,7 @@ export default function Footer() {
               <li className="flex items-start gap-3 text-gray-400">
                 <MapPin className="h-5 w-5 mt-0.5 shrink-0" />
                 <span>
-                  {settings.address.address1}, {settings.address.city}, {settings.address.state} {settings.address.postalCode}
+                  {settings.address?.address1}, {settings.address?.city}, {settings.address?.state} {settings.address?.postalCode}
                 </span>
               </li>
               <li className="flex items-center gap-3 text-gray-400">

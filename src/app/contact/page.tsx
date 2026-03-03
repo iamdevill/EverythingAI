@@ -127,7 +127,7 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-gray-900">Address</h3>
                   <p className="text-gray-600 mt-1">
-                    {settings.address.address1}, {settings.address.city}, {settings.address.state} {settings.address.postalCode}
+                    {settings.address?.address1}, {settings.address?.city}, {settings.address?.state} {settings.address?.postalCode}
                   </p>
                 </div>
               </div>

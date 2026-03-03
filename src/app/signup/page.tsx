@@ -60,11 +60,13 @@ export default function SignUpPage() {
       if (data.user) {
         setUser({
           id: data.user.id,
-          email: data.user.email || formData.email,
+          email: data.user.email || "",
           firstName: formData.firstName,
           lastName: formData.lastName,
           addresses: [],
+          isActive: true,
           createdAt: new Date(),
+          updatedAt: new Date(),
         });
         router.push('/account');
       }
